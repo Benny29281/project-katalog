@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galeri Cloud / 云端相册</title>
+  <title>IPT KATALOG</title>
   <!-- Anti-block referrer untuk gambar Google Drive -->
   <meta name="referrer" content="no-referrer">
   <!-- Tailwind CSS -->
@@ -11,7 +11,7 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap');
     body {
       font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
     }
@@ -19,58 +19,58 @@
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .folder-card:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
     }
     .image-card:hover .image-overlay {
       opacity: 1;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+  <!-- ==================== HEADER (PUTIH BERSIH) ==================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
       
       <!-- Brand & Title -->
       <div class="flex items-center gap-3 cursor-pointer select-none" onclick="navigateToRoot()">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-500 flex items-center justify-center shadow-md shadow-sky-500/25">
           <i data-lucide="folder-git-2" class="w-5 h-5 text-white"></i>
         </div>
         <div>
-          <h1 id="siteTitle" class="text-base sm:text-lg font-bold tracking-tight text-white leading-tight">Galeri Cloud</h1>
-          <p id="t-syncLive" class="text-xs text-slate-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <h1 id="siteTitle" class="text-base sm:text-lg font-bold tracking-tight text-slate-900 leading-tight">IPT KATALOG</h1>
+          <p id="t-syncLive" class="text-xs text-slate-500 flex items-center gap-1.5 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             Sync Google Drive Real-time
           </p>
         </div>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Action Buttons (Biru Muda / Sky Blue) -->
       <div class="flex items-center gap-2">
         
         <!-- Language Switcher Toggle -->
-        <button onclick="toggleLanguage()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition" title="Ganti Bahasa / 切换语言">
-          <i data-lucide="languages" class="w-3.5 h-3.5 text-indigo-400"></i>
+        <button onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 transition" title="Ganti Bahasa / 切换语言">
+          <i data-lucide="languages" class="w-3.5 h-3.5 text-sky-500"></i>
           <span id="langLabel">中文</span>
         </button>
 
         <!-- Open in Drive Button -->
         <a id="openDriveBtn" href="#" target="_blank" rel="noopener noreferrer" 
-           class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
-          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+           class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition">
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-slate-500"></i>
           <span id="t-openDrive">Buka di Drive</span>
         </a>
 
         <!-- Refresh Button -->
         <button onclick="refreshCurrentFolder()" title="Muat Ulang / 刷新"
-                class="p-2 rounded-lg text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition">
+                class="p-2 rounded-xl text-slate-600 hover:text-sky-600 bg-slate-100 hover:bg-sky-50 border border-slate-200 transition">
           <i data-lucide="refresh-cw" class="w-4 h-4" id="refreshIcon"></i>
         </button>
 
-        <!-- Settings Button -->
+        <!-- Settings Button (Biru Muda Primer) -->
         <button onclick="openSettingsModal()" title="Pengaturan / 设置"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm shadow-indigo-600/30 transition">
+                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-sky-500 hover:bg-sky-600 text-white shadow-md shadow-sky-500/25 transition">
           <i data-lucide="settings" class="w-4 h-4"></i>
           <span class="hidden sm:inline" id="t-config">Pengaturan</span>
         </button>
@@ -83,7 +83,7 @@
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
     <!-- Top Toolbar: Breadcrumb Navigation & Search -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-800">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200">
       
       <!-- Breadcrumb Bar (Folder Hierarki) -->
       <nav class="flex items-center gap-1.5 text-xs sm:text-sm overflow-x-auto py-1 scrollbar-none" id="breadcrumbNav">
@@ -92,46 +92,48 @@
 
       <!-- Search Input -->
       <div class="relative w-full md:w-80">
-        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
         <input type="text" id="searchInput" placeholder="Cari foto di folder ini..."
                oninput="handleSearch(this.value)"
-               class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition placeholder:text-slate-500">
+               class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition shadow-sm placeholder:text-slate-400">
       </div>
     </div>
 
-    <!-- Live Sync Alert Hint -->
-    <div class="mt-4 p-3 rounded-xl bg-slate-900/50 border border-slate-800/80 flex items-center justify-between text-xs text-slate-400 gap-3">
+    <!-- Live Sync Alert Hint (Biru Muda Soft) -->
+    <div class="mt-4 p-3.5 rounded-2xl bg-sky-50/80 border border-sky-100 flex items-center justify-between text-xs text-sky-900 gap-3">
       <div class="flex items-center gap-2.5">
-        <i data-lucide="cloud" class="w-4 h-4 text-indigo-400 flex-shrink-0"></i>
-        <span id="t-quickHint">Mau tambah/hapus foto atau folder? Cukup buka Google Drive Anda di HP atau PC. Website akan otomatis mengikuti secara real-time!</span>
+        <div class="w-6 h-6 rounded-lg bg-sky-500/15 flex items-center justify-center flex-shrink-0 text-sky-600">
+          <i data-lucide="cloud" class="w-3.5 h-3.5"></i>
+        </div>
+        <span id="t-quickHint" class="font-medium">Mau tambah/hapus foto atau folder? Cukup buka Google Drive Anda di HP atau PC. Website akan otomatis mengikuti secara real-time!</span>
       </div>
-      <a id="uploadHintLink" href="#" target="_blank" class="flex-shrink-0 text-indigo-400 hover:text-indigo-300 font-semibold underline flex items-center gap-1">
+      <a id="uploadHintLink" href="#" target="_blank" class="flex-shrink-0 text-sky-600 hover:text-sky-700 font-bold underline flex items-center gap-1">
         <span id="t-addPhoto">Buka Drive</span> <i data-lucide="arrow-right" class="w-3 h-3"></i>
       </a>
     </div>
 
     <!-- Error Debug Banner -->
-    <div id="errorBanner" class="hidden mt-4 p-4 rounded-xl bg-rose-950/60 border border-rose-800/80 text-rose-200">
+    <div id="errorBanner" class="hidden mt-4 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 shadow-sm">
       <div class="flex items-start gap-3">
-        <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5"></i>
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5"></i>
         <div class="flex-1 text-xs">
-          <h4 class="font-bold text-rose-100 text-sm mb-1" id="errorTitle">Koneksi Bermasalah / 连接异常</h4>
-          <p id="errorMessage" class="text-rose-300 font-mono bg-rose-950/80 p-2.5 rounded-lg border border-rose-900 my-2 break-all"></p>
-          <div id="errorSuggestion" class="text-slate-300 space-y-1 mt-2"></div>
+          <h4 class="font-bold text-rose-900 text-sm mb-1" id="errorTitle">Koneksi Bermasalah / 连接异常</h4>
+          <p id="errorMessage" class="text-rose-700 font-mono bg-white p-2.5 rounded-xl border border-rose-200 my-2 break-all"></p>
+          <div id="errorSuggestion" class="text-slate-600 space-y-1 mt-2"></div>
         </div>
       </div>
     </div>
 
     <!-- Unconfigured Setup Prompt -->
-    <div id="setupNotice" class="hidden mt-8 p-8 rounded-2xl bg-gradient-to-b from-indigo-950/50 to-slate-900 border border-indigo-800/50 text-center">
-      <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center mb-3.5 shadow-lg shadow-indigo-600/10">
+    <div id="setupNotice" class="hidden mt-8 p-8 rounded-2xl bg-white border border-slate-200 text-center shadow-sm">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center mb-3.5 shadow-md shadow-sky-500/10">
         <i data-lucide="key" class="w-7 h-7"></i>
       </div>
-      <h3 class="text-base sm:text-lg font-bold text-white" id="t-setupTitle">Hubungkan ke Google Drive Anda</h3>
-      <p class="text-xs sm:text-sm text-slate-400 max-w-md mx-auto mt-1 mb-5" id="t-setupDesc">
+      <h3 class="text-base sm:text-lg font-bold text-slate-900" id="t-setupTitle">Hubungkan ke Google Drive Anda</h3>
+      <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mt-1 mb-5" id="t-setupDesc">
         Masukkan ID Folder Google Drive dan Google API Key untuk mulai menampilkan folder & foto secara otomatis.
       </p>
-      <button onclick="openSettingsModal()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm font-semibold text-white transition shadow-lg shadow-indigo-600/30 inline-flex items-center gap-2">
+      <button onclick="openSettingsModal()" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-xs sm:text-sm font-semibold text-white transition shadow-md shadow-sky-500/25 inline-flex items-center gap-2">
         <i data-lucide="settings" class="w-4 h-4"></i>
         <span id="t-setupBtn">Buka Pengaturan Sekarang</span>
       </button>
@@ -140,10 +142,10 @@
     <!-- ==================== SUBFOLDERS SECTION ==================== -->
     <div id="folderSection" class="mt-8 hidden">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-          <i data-lucide="folder" class="w-4 h-4 text-amber-400"></i>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+          <i data-lucide="folder" class="w-4 h-4 text-sky-500"></i>
           <span id="t-foldersTitle">Folder / Album</span>
-          <span id="folderCountBadge" class="px-2 py-0.5 rounded-full bg-slate-800 text-[11px] text-slate-400">0</span>
+          <span id="folderCountBadge" class="px-2 py-0.5 rounded-full bg-sky-100 text-[11px] font-semibold text-sky-700">0</span>
         </h2>
       </div>
 
@@ -156,21 +158,21 @@
     <!-- ==================== PHOTOS SECTION ==================== -->
     <div class="mt-8">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-          <i data-lucide="image" class="w-4 h-4 text-indigo-400"></i>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+          <i data-lucide="image" class="w-4 h-4 text-sky-500"></i>
           <span id="t-photosTitle">Foto</span>
-          <span class="px-2 py-0.5 rounded-full bg-slate-800 text-[11px] text-slate-400">(<span id="photoCount">0</span>)</span>
+          <span class="px-2 py-0.5 rounded-full bg-slate-200 text-[11px] font-semibold text-slate-700">(<span id="photoCount">0</span>)</span>
         </h2>
-        <span id="syncStatus" class="text-xs text-slate-500">Memuat...</span>
+        <span id="syncStatus" class="text-xs text-slate-400 font-medium">Memuat...</span>
       </div>
 
-      <!-- Loading Skeleton -->
+      <!-- Loading Skeleton (Putih/Abu) -->
       <div id="loadingSkeleton" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
-        <div class="aspect-square rounded-2xl bg-slate-900 animate-pulse border border-slate-800"></div>
-        <div class="aspect-square rounded-2xl bg-slate-900 animate-pulse border border-slate-800"></div>
-        <div class="aspect-square rounded-2xl bg-slate-900 animate-pulse border border-slate-800"></div>
-        <div class="aspect-square rounded-2xl bg-slate-900 animate-pulse border border-slate-800"></div>
-        <div class="aspect-square rounded-2xl bg-slate-900 animate-pulse border border-slate-800"></div>
+        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
       </div>
 
       <!-- Photo Grid -->
@@ -179,12 +181,12 @@
       </div>
 
       <!-- Empty State -->
-      <div id="emptyState" class="hidden py-16 text-center border border-dashed border-slate-800 rounded-2xl mt-4">
-        <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 mb-3">
+      <div id="emptyState" class="hidden py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl mt-4 bg-white">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-500 mb-3">
           <i data-lucide="folder-open" class="w-7 h-7"></i>
         </div>
-        <p class="text-sm font-semibold text-slate-300" id="t-emptyTitle">Belum ada foto atau subfolder di sini</p>
-        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto" id="t-emptyDesc">
+        <p class="text-sm font-bold text-slate-700" id="t-emptyTitle">Belum ada foto atau subfolder di sini</p>
+        <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto" id="t-emptyDesc">
           Silakan upload foto atau buat folder baru di Google Drive Anda.
         </p>
       </div>
@@ -193,27 +195,27 @@
   </main>
 
   <!-- ==================== FOOTER ==================== -->
-  <footer class="mt-auto border-t border-slate-900 py-6 text-center text-xs text-slate-500">
+  <footer class="mt-auto border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
     <p id="t-footerText">Ditenagai oleh Google Drive API &bull; Hosted on GitHub Pages</p>
   </footer>
 
   <!-- ==================== LIGHTBOX MODAL ==================== -->
-  <div id="lightboxModal" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md hidden flex flex-col justify-between p-4 sm:p-6 transition-all select-none">
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex flex-col justify-between p-4 sm:p-6 transition-all select-none">
     
     <!-- Lightbox Top Bar -->
     <div class="flex items-center justify-between text-white">
       <div class="flex items-center gap-3 truncate pr-4">
-        <span id="lbCounter" class="text-xs text-slate-400 font-mono bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">1 / 1</span>
+        <span id="lbCounter" class="text-xs text-sky-300 font-mono bg-white/10 px-2.5 py-1 rounded-md border border-white/10">1 / 1</span>
         <h4 id="lbFileName" class="text-xs sm:text-sm font-medium truncate max-w-xs sm:max-w-md">Nama File</h4>
       </div>
       <div class="flex items-center gap-2">
-        <a id="lbDownloadBtn" href="#" target="_blank" download class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition" title="Download">
+        <a id="lbDownloadBtn" href="#" target="_blank" download class="p-2 rounded-xl bg-white/10 hover:bg-sky-500 text-white transition" title="Download">
           <i data-lucide="download" class="w-4 h-4"></i>
         </a>
-        <a id="lbOpenInDrive" href="#" target="_blank" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition" title="Buka di Drive">
+        <a id="lbOpenInDrive" href="#" target="_blank" class="p-2 rounded-xl bg-white/10 hover:bg-sky-500 text-white transition" title="Buka di Drive">
           <i data-lucide="external-link" class="w-4 h-4"></i>
         </a>
-        <button onclick="closeLightbox()" class="p-2 rounded-xl bg-slate-800/80 hover:bg-rose-950 hover:text-rose-400 text-slate-200 transition" title="Tutup / 关闭">
+        <button onclick="closeLightbox()" class="p-2 rounded-xl bg-white/10 hover:bg-rose-600 text-white transition" title="Tutup / 关闭">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -221,8 +223,8 @@
 
     <!-- Lightbox Image Stage -->
     <div class="relative flex-1 flex items-center justify-center my-3 overflow-hidden">
-      <!-- Prev Button -->
-      <button onclick="prevPhoto()" class="absolute left-2 sm:left-4 z-10 p-3 rounded-full bg-slate-900/80 hover:bg-indigo-600 border border-slate-800 text-white transition shadow-xl">
+      <!-- Prev Button (Biru Muda Hover) -->
+      <button onclick="prevPhoto()" class="absolute left-2 sm:left-4 z-10 p-3 rounded-full bg-black/60 hover:bg-sky-500 border border-white/20 text-white transition shadow-xl">
         <i data-lucide="chevron-left" class="w-5 h-5"></i>
       </button>
 
@@ -230,8 +232,8 @@
       <img id="lbImage" src="" alt="Preview" referrerpolicy="no-referrer"
            class="max-h-[75vh] max-w-full object-contain rounded-xl shadow-2xl transition duration-300">
 
-      <!-- Next Button -->
-      <button onclick="nextPhoto()" class="absolute right-2 sm:right-4 z-10 p-3 rounded-full bg-slate-900/80 hover:bg-indigo-600 border border-slate-800 text-white transition shadow-xl">
+      <!-- Next Button (Biru Muda Hover) -->
+      <button onclick="nextPhoto()" class="absolute right-2 sm:right-4 z-10 p-3 rounded-full bg-black/60 hover:bg-sky-500 border border-white/20 text-white transition shadow-xl">
         <i data-lucide="chevron-right" class="w-5 h-5"></i>
       </button>
     </div>
@@ -242,17 +244,17 @@
     </div>
   </div>
 
-  <!-- ==================== SETTINGS MODAL ==================== -->
-  <div id="settingsModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+  <!-- ==================== SETTINGS MODAL (MODERN PUTIH) ==================== -->
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
         <div class="flex items-center gap-2.5">
-          <div class="p-2 rounded-xl bg-indigo-600/20 text-indigo-400">
+          <div class="p-2.5 rounded-xl bg-sky-100 text-sky-600">
             <i data-lucide="sliders" class="w-5 h-5"></i>
           </div>
-          <h3 class="text-base font-bold text-white" id="t-modalTitle">Konfigurasi Google Drive</h3>
+          <h3 class="text-base font-bold text-slate-900" id="t-modalTitle">Konfigurasi Google Drive</h3>
         </div>
-        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white">
+        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -260,43 +262,43 @@
       <form id="settingsForm" onsubmit="saveSettings(event)" class="mt-4 space-y-4">
         <!-- Site Title -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1" id="t-lblSiteTitle">Judul Website</label>
-          <input type="text" id="inputSiteTitle" placeholder="Misal: Galeri Foto Benny"
-                 class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+          <label class="block text-xs font-semibold text-slate-700 mb-1" id="t-lblSiteTitle">Judul Website</label>
+          <input type="text" id="inputSiteTitle" placeholder="Misal: IPT KATALOG"
+                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-100 transition">
         </div>
 
         <!-- Root Folder ID -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">
+          <label class="block text-xs font-semibold text-slate-700 mb-1">
             <span id="t-lblFolderId">Google Drive Folder ID (atau Link Folder)</span>
-            <span class="text-rose-400">*</span>
+            <span class="text-rose-500">*</span>
           </label>
           <input type="text" id="inputFolderId" required placeholder="Paste link folder atau kode ID folder"
-                 class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500 font-mono">
-          <p class="text-[11px] text-slate-400 mt-1" id="t-lblFolderDesc">
+                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-100 transition font-mono">
+          <p class="text-[11px] text-slate-500 mt-1" id="t-lblFolderDesc">
             Bisa langsung paste link Google Drive lengkap. Pastikan folder disetel ke <strong>"Siapa saja yang memiliki link"</strong> (Viewer).
           </p>
         </div>
 
         <!-- Google Drive API Key -->
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">
+          <label class="block text-xs font-semibold text-slate-700 mb-1">
             <span id="t-lblApiKey">Google Drive API Key</span>
-            <span class="text-rose-400">*</span>
+            <span class="text-rose-500">*</span>
           </label>
           <input type="text" id="inputApiKey" required placeholder="AIzaSyD..."
-                 class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500 font-mono">
-          <p class="text-[11px] text-slate-400 mt-1" id="t-lblApiDesc">
+                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-100 transition font-mono">
+          <p class="text-[11px] text-slate-500 mt-1" id="t-lblApiDesc">
             Di Google Cloud Console, pastikan <em>Set application restrictions</em> disetel ke <strong>None (Tidak ada)</strong>.
           </p>
         </div>
 
         <!-- Buttons -->
-        <div class="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-800">
-          <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800 transition" id="t-btnCancel">
+        <div class="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
+          <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition" id="t-btnCancel">
             Batal
           </button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition" id="t-btnSave">
+          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-sky-500 hover:bg-sky-600 text-white shadow-md shadow-sky-500/25 transition" id="t-btnSave">
             Simpan & Sinkronkan
           </button>
         </div>
@@ -306,11 +308,20 @@
 
   <!-- ==================== JAVASCRIPT ==================== -->
   <script>
+    // ========================================================
+    // PENGATURAN UTAMA (Agar langsung connect di SEMUA HP & Laptop)
+    // ========================================================
+    const DEFAULT_CONFIG = {
+      siteTitle: "IPT KATALOG",
+      folderId: "1vX253oGEDwpvW6TqYoJ4nvpRBOSalzze",
+      apiKey: "AIzaSyCRa-GYkTw6QLpNs6UZdtgTkBSbpGaz1Ao"
+    };
+
     // I18N Kamus Bahasa (Indonesian & Chinese / 中文)
     const translations = {
       id: {
         langName: "中文",
-        siteDefault: "Galeri Cloud",
+        siteDefault: "IPT KATALOG",
         syncLive: "Sync Google Drive Real-time",
         openDrive: "Buka di Drive",
         config: "Pengaturan",
@@ -345,7 +356,7 @@
       },
       zh: {
         langName: "ID",
-        siteDefault: "云端相册",
+        siteDefault: "IPT 目录 (KATALOG)",
         syncLive: "谷歌云端硬盘实时同步",
         openDrive: "在云端打开",
         config: "设置",
@@ -382,11 +393,7 @@
 
     // State Variables
     let currentLang = localStorage.getItem("gdrive_gallery_lang") || "id";
-    let config = {
-      siteTitle: "",
-      folderId: "",
-      apiKey: ""
-    };
+    let config = { ...DEFAULT_CONFIG };
     let currentFolder = { id: "", name: "" };
     let folderHistory = [];
     let allPhotos = [];
@@ -414,7 +421,7 @@
     function applyLanguage(lang) {
       const t = translations[lang] || translations.id;
       document.getElementById("langLabel").innerText = t.langName;
-      document.getElementById("t-syncLive").innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ${t.syncLive}`;
+      document.getElementById("t-syncLive").innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> ${t.syncLive}`;
       document.getElementById("t-openDrive").innerText = t.openDrive;
       document.getElementById("t-config").innerText = t.config;
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
@@ -456,15 +463,22 @@
 
     // Load Konfigurasi
     function loadConfig() {
+      config = { ...DEFAULT_CONFIG };
+
       const savedConfig = localStorage.getItem("gdrive_gallery_cfg");
       if (savedConfig) {
         try {
-          config = { ...config, ...JSON.parse(savedConfig) };
-          if (config.folderId) config.folderId = cleanFolderId(config.folderId);
+          const parsed = JSON.parse(savedConfig);
+          if (!DEFAULT_CONFIG.folderId && parsed.folderId) config.folderId = parsed.folderId;
+          if (!DEFAULT_CONFIG.apiKey && parsed.apiKey) config.apiKey = parsed.apiKey;
+          if (parsed.siteTitle) config.siteTitle = parsed.siteTitle;
         } catch (e) {
           console.error(e);
         }
       }
+
+      if (config.folderId) config.folderId = cleanFolderId(config.folderId);
+
       if (config.siteTitle) {
         document.getElementById("siteTitle").innerText = config.siteTitle;
         document.title = config.siteTitle;
@@ -499,12 +513,10 @@
       document.getElementById("uploadHintLink").href = driveUrl;
 
       try {
-        // Query subfolders di dalam folder ini
         const subfolders = await queryDrive(
           `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`
         );
 
-        // Query file gambar di dalam folder ini
         const photos = await queryDrive(
           `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`
         );
@@ -547,11 +559,11 @@
 
         let raw = (err.message || "").toLowerCase();
         if (raw.includes("requests from referer") || raw.includes("blocked")) {
-          errSugg.innerHTML = `<p class="font-medium text-amber-300">💡 ${t.errBlocked}</p>`;
+          errSugg.innerHTML = `<p class="font-medium text-amber-600">💡 ${t.errBlocked}</p>`;
         } else if (raw.includes("file not found")) {
-          errSugg.innerHTML = `<p class="font-medium text-amber-300">💡 ${t.errNotFound}</p>`;
+          errSugg.innerHTML = `<p class="font-medium text-amber-600">💡 ${t.errNotFound}</p>`;
         } else if (raw.includes("key not valid") || raw.includes("key_invalid")) {
-          errSugg.innerHTML = `<p class="font-medium text-amber-300">💡 ${t.errInvalidKey}</p>`;
+          errSugg.innerHTML = `<p class="font-medium text-amber-600">💡 ${t.errInvalidKey}</p>`;
         }
       } finally {
         showLoading(false);
@@ -578,7 +590,7 @@
       return data.files || [];
     }
 
-    // Render Subfolders
+    // Render Subfolders (Desain Card Putih & Biru Muda)
     function renderFolders(folders) {
       const container = document.getElementById("folderGrid");
       const section = document.getElementById("folderSection");
@@ -595,16 +607,16 @@
 
       folders.forEach(f => {
         const card = document.createElement("button");
-        card.className = "folder-card flex items-center gap-3 p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800/80 hover:border-indigo-500/50 text-left transition shadow-sm group";
+        card.className = "folder-card flex items-center gap-3 p-3.5 rounded-2xl bg-white hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 text-left transition shadow-sm hover:shadow-md group";
         card.onclick = () => openFolder(f.id, f.name);
         card.innerHTML = `
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500/20 to-orange-500/10 text-amber-400 group-hover:from-indigo-600 group-hover:to-violet-600 group-hover:text-white transition flex items-center justify-center flex-shrink-0 shadow-inner">
+          <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0 shadow-inner">
             <i data-lucide="folder" class="w-5 h-5"></i>
           </div>
           <div class="truncate flex-1">
-            <span class="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-white truncate block">${f.name}</span>
-            <span class="text-[10px] text-slate-500 group-hover:text-slate-400 flex items-center gap-1">
-              <span>Buka Album</span> <i data-lucide="chevron-right" class="w-2.5 h-2.5"></i>
+            <span class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-sky-600 truncate block">${f.name}</span>
+            <span class="text-[10px] text-slate-400 group-hover:text-sky-500 flex items-center gap-1 font-medium">
+              <span>Buka Folder</span> <i data-lucide="chevron-right" class="w-2.5 h-2.5"></i>
             </span>
           </div>
         `;
@@ -613,7 +625,7 @@
       lucide.createIcons();
     }
 
-    // Render Foto
+    // Render Foto (Frame Bersih Putih)
     function renderPhotos(photos) {
       const container = document.getElementById("photoGrid");
       const emptyState = document.getElementById("emptyState");
@@ -622,7 +634,6 @@
       container.innerHTML = "";
       photoCount.innerText = photos.length;
 
-      // Jika tidak ada foto DAN tidak ada subfolder
       const hasFolders = !document.getElementById("folderSection").classList.contains("hidden");
       if ((!photos || photos.length === 0) && !hasFolders) {
         emptyState.classList.remove("hidden");
@@ -635,14 +646,14 @@
 
       photos.forEach((photo, index) => {
         const card = document.createElement("div");
-        card.className = "image-card group relative aspect-square rounded-2xl overflow-hidden bg-slate-900 border border-slate-800/80 cursor-pointer shadow-sm hover:shadow-indigo-500/10 transition";
+        card.className = "image-card group relative aspect-square rounded-2xl overflow-hidden bg-white border border-slate-200 cursor-pointer shadow-sm hover:shadow-lg hover:border-sky-300 transition";
         card.onclick = () => openLightbox(index);
 
         card.innerHTML = `
           <img src="${photo.thumbUrl}" alt="${photo.name}" loading="lazy" referrerpolicy="no-referrer"
                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-               onerror="this.onerror=null; this.src='https://placehold.co/400x400/1e293b/94a3b8?text=Foto';">
-          <div class="image-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition duration-300 flex flex-col justify-end p-3">
+               onerror="this.onerror=null; this.src='https://placehold.co/400x400/f8fafc/94a3b8?text=Foto';">
+          <div class="image-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent opacity-0 transition duration-300 flex flex-col justify-end p-3">
             <p class="text-xs font-semibold text-white truncate drop-shadow">${photo.name}</p>
           </div>
         `;
@@ -687,19 +698,19 @@
       folderHistory.forEach((item, index) => {
         const isLast = index === folderHistory.length - 1;
         const btn = document.createElement("button");
-        btn.className = `flex items-center gap-1.5 font-medium transition py-1 px-2 rounded-lg ${
-          isLast ? "text-indigo-400 bg-indigo-950/40 pointer-events-none font-semibold" : "text-slate-400 hover:text-white hover:bg-slate-900"
+        btn.className = `flex items-center gap-1.5 font-medium transition py-1 px-2.5 rounded-xl ${
+          isLast ? "text-sky-700 bg-sky-100/80 pointer-events-none font-bold" : "text-slate-600 hover:text-sky-600 hover:bg-slate-100"
         }`;
         btn.onclick = () => navigateToHistoryIndex(index);
         btn.innerHTML = `
-          ${index === 0 ? '<i data-lucide="home" class="w-3.5 h-3.5"></i>' : '<i data-lucide="folder" class="w-3.5 h-3.5 text-amber-400"></i>'}
+          ${index === 0 ? '<i data-lucide="home" class="w-3.5 h-3.5"></i>' : '<i data-lucide="folder" class="w-3.5 h-3.5 text-sky-500"></i>'}
           <span class="truncate max-w-[120px] sm:max-w-[200px]">${index === 0 ? translations[currentLang].allAlbums : item.name}</span>
         `;
         nav.appendChild(btn);
 
         if (!isLast) {
           const sep = document.createElement("span");
-          sep.className = "text-slate-600 px-0.5";
+          sep.className = "text-slate-400 px-0.5";
           sep.innerText = "/";
           nav.appendChild(sep);
         }
@@ -789,7 +800,7 @@
 
     function saveSettings(event) {
       event.preventDefault();
-      config.siteTitle = document.getElementById("inputSiteTitle").value.trim();
+      config.siteTitle = document.getElementById("inputSiteTitle").value.trim() || "IPT KATALOG";
       config.folderId = cleanFolderId(document.getElementById("inputFolderId").value);
       config.apiKey = document.getElementById("inputApiKey").value.trim();
 
