@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeri Foto Cloud</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .image-card:hover .image-overlay {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigateToRoot()">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <i data-lucide="image" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <h1 id="siteTitle" class="text-lg font-bold tracking-tight text-white leading-tight">Drive Gallery</h1>
+          <p class="text-xs text-slate-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Sync Google Drive Real-time
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <!-- Open in Drive Link -->
+        <a id="openDriveBtn" href="#" target="_blank" rel="noopener noreferrer" 
+           class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span>Buka di Drive</span>
+        </a>
+
+        <!-- Refresh Button -->
+        <button onclick="refreshCurrentFolder()" title="Muat Ulang Foto"
+                class="p-2 rounded-lg text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition">
+          <i data-lucide="refresh-cw" class="w-4 h-4" id="refreshIcon"></i>
+        </button>
+
+        <!-- Settings Button -->
+        <button onclick="openSettingsModal()" title="Pengaturan API & Folder"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm shadow-indigo-600/30 transition">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+          <span class="hidden md:inline">Konfigurasi</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- Top Toolbar: Breadcrumb & Search -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-1.5 text-sm overflow-x-auto py-1" id="breadcrumbNav">
+        <!-- Dynamically injected -->
+      </nav>
+
+      <!-- Search Input -->
+      <div class="relative w-full md:w-72">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input type="text" id="searchInput" placeholder="Cari foto di folder ini..."
+               oninput="handleSearch(this.value)"
+               class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition placeholder:text-slate-500">
+      </div>
+    </div>
+
+    <!-- Quick Upload Hint Alert -->
+    <div class="mt-4 p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 flex items-center justify-between text-xs text-slate-400 gap-3">
+      <div class="flex items-center gap-2.5">
+        <i data-lucide="info" class="w-4 h-4 text-indigo-400 flex-shrink-0"></i>
+        <span>Mau tambah atau hapus foto? Cukup buka aplikasi Google Drive di HP atau PC Anda. Perubahan akan langsung otomatis tampil di sini!</span>
+      </div>
+      <a id="uploadHintLink" href="#" target="_blank" class="flex-shrink-0 text-indigo-400 hover:text-indigo-300 font-medium underline flex items-center gap-1">
+        Tambah Foto <i data-lucide="arrow-right" class="w-3 h-3"></i>
+      </a>
+    </div>
+
+    <!-- Setup Prompt Alert (Shown when API key or Folder ID is missing) -->
+    <div id="setupNotice" class="hidden mt-6 p-6 rounded-2xl bg-gradient-to-r from-indigo-950/60 to-slate-900 border border-indigo-800/50 text-center">
+      <div class="w-12 h-12 mx-auto rounded-full bg-indigo-600/20 text-indigo-400 flex items-center justify-center mb-3">
+        <i data-lucide="key" class="w-6 h-6"></i>
+      </div>
+      <h3 class="text-base font-semibold text-white">Hubungkan ke Google Drive Anda</h3>
+      <p class="text-xs text-slate-400 max-w-md mx-auto mt-1 mb-4">
+        Masukkan ID Folder Google Drive dan Google API Key untuk mulai menampilkan foto secara otomatis.
+      </p>
+      <button onclick="openSettingsModal()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition shadow-lg shadow-indigo-600/30">
+        Buka Pengaturan Sekarang
+      </button>
+    </div>
+
+    <!-- Subfolders Section -->
+    <div id="folderSection" class="mt-6 hidden">
+      <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+        <i data-lucide="folder" class="w-4 h-4 text-indigo-400"></i>
+        Folder / Album
+      </h2>
+      <div id="folderGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+        <!-- Dynamically injected folder cards -->
+      </div>
+    </div>
+
+    <!-- Photos Section -->
+    <div class="mt-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <i data-lucide="image" class="w-4 h-4 text-indigo-400"></i>
+          Foto (<span id="photoCount">0</span>)
+        </h2>
+        <span id="syncStatus" class="text-xs text-slate-500">Memuat...</span>
+      </div>
+
+      <!-- Loading Skeleton -->
+      <div id="loadingSkeleton" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+        <div class="aspect-square rounded-xl bg-slate-900 animate-pulse border border-slate-800"></div>
+        <div class="aspect-square rounded-xl bg-slate-900 animate-pulse border border-slate-800"></div>
+        <div class="aspect-square rounded-xl bg-slate-900 animate-pulse border border-slate-800"></div>
+        <div class="aspect-square rounded-xl bg-slate-900 animate-pulse border border-slate-800"></div>
+        <div class="aspect-square rounded-xl bg-slate-900 animate-pulse border border-slate-800"></div>
+      </div>
+
+      <!-- Photo Grid -->
+      <div id="photoGrid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+        <!-- Dynamically injected photos -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden py-16 text-center">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-600 mb-3">
+          <i data-lucide="image-off" class="w-8 h-8"></i>
+        </div>
+        <p class="text-sm font-medium text-slate-300">Belum ada foto di folder ini</p>
+        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          Silakan upload foto langsung ke folder Google Drive Anda, lalu klik tombol refresh.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="mt-auto border-t border-slate-900 py-6 text-center text-xs text-slate-500">
+    <p>Ditenagai oleh Google Drive API & GitHub Pages &bull; Bebas Biaya Hosting</p>
+  </footer>
+
+  <!-- ==================== LIGHTBOX MODAL ==================== -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md hidden flex flex-col justify-between p-4 sm:p-6 transition-all">
+    <!-- Lightbox Header -->
+    <div class="flex items-center justify-between text-white">
+      <div class="flex items-center gap-3 truncate pr-4">
+        <span id="lbCounter" class="text-xs text-slate-400 font-mono">1 / 1</span>
+        <h4 id="lbFileName" class="text-xs sm:text-sm font-semibold truncate max-w-xs sm:max-w-md">Nama File</h4>
+      </div>
+      <div class="flex items-center gap-2">
+        <a id="lbDownloadBtn" href="#" target="_blank" download class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition" title="Download Foto Asli">
+          <i data-lucide="download" class="w-4 h-4"></i>
+        </a>
+        <a id="lbOpenInDrive" href="#" target="_blank" class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition" title="Buka di Drive">
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+        </a>
+        <button onclick="closeLightbox()" class="p-2 rounded-lg bg-slate-800/80 hover:bg-rose-950 hover:text-rose-400 text-slate-200 transition" title="Tutup">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Lightbox Image Stage -->
+    <div class="relative flex-1 flex items-center justify-center my-2 select-none overflow-hidden">
+      <!-- Prev Button -->
+      <button onclick="prevPhoto()" class="absolute left-2 sm:left-4 z-10 p-2.5 sm:p-3 rounded-full bg-slate-900/80 hover:bg-indigo-600 border border-slate-800 text-white transition shadow-lg">
+        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Main Image -->
+      <img id="lbImage" src="" alt="Preview" class="max-h-[75vh] max-w-full object-contain rounded-xl shadow-2xl transition duration-300">
+
+      <!-- Next Button -->
+      <button onclick="nextPhoto()" class="absolute right-2 sm:right-4 z-10 p-2.5 sm:p-3 rounded-full bg-slate-900/80 hover:bg-indigo-600 border border-slate-800 text-white transition shadow-lg">
+        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Lightbox Footer Info -->
+    <div class="text-center text-xs text-slate-400">
+      Gunakan tombol panah kiri / kanan (<kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">&larr;</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">&rarr;</kbd>) atau swipe untuk navigasi foto
+    </div>
+  </div>
+
+  <!-- ==================== SETTINGS MODAL ==================== -->
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-lg bg-indigo-600/20 text-indigo-400">
+            <i data-lucide="sliders" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">Konfigurasi Google Drive</h3>
+        </div>
+        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="settingsForm" onsubmit="saveSettings(event)" class="mt-4 space-y-4">
+        <!-- Site Title -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Judul Website</label>
+          <input type="text" id="inputSiteTitle" placeholder="Misal: Galeri Foto Benny"
+                 class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <!-- Root Folder ID -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">
+            Google Drive Folder ID
+            <span class="text-rose-400">*</span>
+          </label>
+          <input type="text" id="inputFolderId" required placeholder="Contoh: 1vX8...yZQ (dari URL folder Drive)"
+                 class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+          <p class="text-[11px] text-slate-400 mt-1">
+            Buka folder di Google Drive, copy kode setelah <code>folders/</code> di browser URL. Pastikan folder sudah di-share ke <strong>"Anyone with the link"</strong>.
+          </p>
+        </div>
+
+        <!-- Google Drive API Key -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">
+            Google Drive API Key
+            <span class="text-rose-400">*</span>
+          </label>
+          <input type="text" id="inputApiKey" required placeholder="Contoh: AIzaSyD..."
+                 class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+          <p class="text-[11px] text-slate-400 mt-1">
+            Didapatkan gratis dari Google Cloud Console (aktifkan Google Drive API).
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-800">
+          <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800 transition">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition">
+            Simpan & Sinkronkan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // Konfigurasi Default (Bisa diisi manual langsung di kode ini jika ingin hardcoded, atau via popup)
+    const DEFAULT_CONFIG = {
+      siteTitle: "Drive Gallery",
+      folderId: "",   // Masukkan Google Drive Folder ID di sini jika mau otomatis
+      apiKey: ""      // Masukkan Google API Key di sini jika mau otomatis
+    };
+
+    // State Management
+    let config = { ...DEFAULT_CONFIG };
+    let currentFolder = { id: "", name: "Beranda" };
+    let folderHistory = []; // Untuk breadcrumbs: [{ id, name }]
+    let allPhotos = [];
+    let filteredPhotos = [];
+    let currentPhotoIndex = 0;
+
+    // Inisialisasi Aplikasi saat halaman dimuat
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      loadConfig();
+      initGallery();
+      setupKeyboardNavigation();
+    });
+
+    // Memuat konfigurasi dari localStorage atau kode default
+    function loadConfig() {
+      const savedConfig = localStorage.getItem("gdrive_gallery_cfg");
+      if (savedConfig) {
+        try {
+          config = { ...config, ...JSON.parse(savedConfig) };
+        } catch (e) {
+          console.error("Gagal membaca saved config", e);
+        }
+      }
+
+      // Update Tampilan Judul
+      if (config.siteTitle) {
+        document.getElementById("siteTitle").innerText = config.siteTitle;
+        document.title = config.siteTitle;
+      }
+    }
+
+    // Inisialisasi Galeri
+    function initGallery() {
+      if (!config.folderId || !config.apiKey) {
+        document.getElementById("setupNotice").classList.remove("hidden");
+        document.getElementById("loadingSkeleton").classList.add("hidden");
+        return;
+      }
+
+      document.getElementById("setupNotice").classList.add("hidden");
+      currentFolder = { id: config.folderId, name: "Semua Album" };
+      folderHistory = [currentFolder];
+      fetchFolderContents(currentFolder.id);
+    }
+
+    // Fetch data isi folder (subfolder + foto) langsung dari Google Drive API
+    async function fetchFolderContents(folderId) {
+      updateBreadcrumbs();
+      showLoading(true);
+      document.getElementById("syncStatus").innerText = "Menghubungkan ke Drive...";
+      
+      // Update link buka di drive
+      const driveUrl = `https://drive.google.com/drive/folders/${folderId}`;
+      document.getElementById("openDriveBtn").href = driveUrl;
+      document.getElementById("uploadHintLink").href = driveUrl;
+
+      try {
+        // 1. Ambil Subfolder
+        const subfolders = await queryDrive(
+          `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`
+        );
+
+        // 2. Ambil Foto-foto
+        const photos = await queryDrive(
+          `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`
+        );
+
+        renderFolders(subfolders);
+        allPhotos = photos.map(file => ({
+          id: file.id,
+          name: file.name,
+          // Thumbnail cepat dari Google User Content CDN
+          thumbUrl: `https://lh3.googleusercontent.com/d/${file.id}=s400`,
+          // Full resolution untuk Lightbox
+          fullUrl: `https://lh3.googleusercontent.com/d/${file.id}=s2000`,
+          // Direct download link
+          downloadUrl: `https://drive.google.com/uc?export=download&id=${file.id}`,
+          driveUrl: file.webViewLink || `https://drive.google.com/file/d/${file.id}/view`
+        }));
+
+        filteredPhotos = [...allPhotos];
+        renderPhotos(filteredPhotos);
+        document.getElementById("syncStatus").innerText = `Terakhir sync: ${new Date().toLocaleTimeString()}`;
+
+      } catch (err) {
+        console.error("Error fetching drive contents:", err);
+        document.getElementById("syncStatus").innerText = "Gagal memuat!";
+        alert("Gagal memuat foto dari Google Drive: " + (err.message || "Pastikan API Key dan Folder ID valid serta folder bersifat Publik"));
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    // Helper untuk memanggil Google Drive API v3
+    async function queryDrive(query) {
+      const url = new URL("https://www.googleapis.com/drive/v3/files");
+      url.searchParams.set("q", query);
+      url.searchParams.set("key", config.apiKey);
+      url.searchParams.set("fields", "files(id, name, mimeType, webViewLink, thumbnailLink, createdTime)");
+      url.searchParams.set("pageSize", "100");
+      url.searchParams.set("orderBy", "createdTime desc");
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData?.error?.message || "Error status " + response.status);
+      }
+      const data = await response.json();
+      return data.files || [];
+    }
+
+    // Render Subfolders
+    function renderFolders(folders) {
+      const container = document.getElementById("folderGrid");
+      const section = document.getElementById("folderSection");
+      container.innerHTML = "";
+
+      if (!folders || folders.length === 0) {
+        section.classList.add("hidden");
+        return;
+      }
+
+      section.classList.remove("hidden");
+      folders.forEach(f => {
+        const card = document.createElement("button");
+        card.className = "flex items-center gap-2.5 p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-indigo-500/50 text-left transition group";
+        card.onclick = () => openFolder(f.id, f.name);
+        card.innerHTML = `
+          <div class="p-2 rounded-lg bg-indigo-600/10 text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition flex-shrink-0">
+            <i data-lucide="folder" class="w-4 h-4"></i>
+          </div>
+          <span class="text-xs font-semibold text-slate-200 group-hover:text-white truncate">${f.name}</span>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // Render Foto ke Grid
+    function renderPhotos(photos) {
+      const container = document.getElementById("photoGrid");
+      const emptyState = document.getElementById("emptyState");
+      const photoCount = document.getElementById("photoCount");
+
+      container.innerHTML = "";
+      photoCount.innerText = photos.length;
+
+      if (!photos || photos.length === 0) {
+        emptyState.classList.remove("hidden");
+        container.classList.add("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+      container.classList.remove("hidden");
+
+      photos.forEach((photo, index) => {
+        const card = document.createElement("div");
+        card.className = "image-card group relative aspect-square rounded-xl overflow-hidden bg-slate-900 border border-slate-800/80 cursor-pointer shadow-sm hover:shadow-indigo-500/10 transition";
+        card.onclick = () => openLightbox(index);
+
+        card.innerHTML = `
+          <img src="${photo.thumbUrl}" alt="${photo.name}" loading="lazy"
+               class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+               onerror="this.onerror=null; this.src='https://placehold.co/400x400/1e293b/94a3b8?text=Foto';">
+          <div class="image-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition duration-300 flex flex-col justify-end p-2.5">
+            <p class="text-[11px] font-medium text-white truncate drop-shadow">${photo.name}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Navigasi Folder
+    function openFolder(folderId, folderName) {
+      currentFolder = { id: folderId, name: folderName };
+      folderHistory.push(currentFolder);
+      fetchFolderContents(folderId);
+    }
+
+    function navigateToHistoryIndex(index) {
+      folderHistory = folderHistory.slice(0, index + 1);
+      currentFolder = folderHistory[folderHistory.length - 1];
+      fetchFolderContents(currentFolder.id);
+    }
+
+    function navigateToRoot() {
+      if (config.folderId) {
+        currentFolder = { id: config.folderId, name: "Semua Album" };
+        folderHistory = [currentFolder];
+        fetchFolderContents(currentFolder.id);
+      }
+    }
+
+    function refreshCurrentFolder() {
+      const icon = document.getElementById("refreshIcon");
+      icon.classList.add("animate-spin");
+      fetchFolderContents(currentFolder.id).finally(() => {
+        setTimeout(() => icon.classList.remove("animate-spin"), 500);
+      });
+    }
+
+    // Update Breadcrumbs Navigation
+    function updateBreadcrumbs() {
+      const nav = document.getElementById("breadcrumbNav");
+      nav.innerHTML = "";
+
+      folderHistory.forEach((item, index) => {
+        const isLast = index === folderHistory.length - 1;
+        const btn = document.createElement("button");
+        btn.className = `flex items-center gap-1 font-medium transition ${
+          isLast ? "text-indigo-400 pointer-events-none" : "text-slate-400 hover:text-white"
+        }`;
+        btn.onclick = () => navigateToHistoryIndex(index);
+        btn.innerHTML = `
+          ${index === 0 ? '<i data-lucide="home" class="w-3.5 h-3.5"></i>' : ""}
+          <span>${item.name}</span>
+        `;
+        nav.appendChild(btn);
+
+        if (!isLast) {
+          const sep = document.createElement("span");
+          sep.className = "text-slate-600";
+          sep.innerText = "/";
+          nav.appendChild(sep);
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // Search Foto
+    function handleSearch(keyword) {
+      keyword = keyword.toLowerCase().trim();
+      if (!keyword) {
+        filteredPhotos = [...allPhotos];
+      } else {
+        filteredPhotos = allPhotos.filter(p => p.name.toLowerCase().includes(keyword));
+      }
+      renderPhotos(filteredPhotos);
+    }
+
+    // Lightbox Modal Logic
+    function openLightbox(index) {
+      currentPhotoIndex = index;
+      updateLightboxContent();
+      document.getElementById("lightboxModal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxModal").classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
+
+    function updateLightboxContent() {
+      const photo = filteredPhotos[currentPhotoIndex];
+      if (!photo) return;
+
+      document.getElementById("lbCounter").innerText = `${currentPhotoIndex + 1} / ${filteredPhotos.length}`;
+      document.getElementById("lbFileName").innerText = photo.name;
+      document.getElementById("lbImage").src = photo.fullUrl;
+      document.getElementById("lbDownloadBtn").href = photo.downloadUrl;
+      document.getElementById("lbOpenInDrive").href = photo.driveUrl;
+    }
+
+    function nextPhoto() {
+      if (filteredPhotos.length === 0) return;
+      currentPhotoIndex = (currentPhotoIndex + 1) % filteredPhotos.length;
+      updateLightboxContent();
+    }
+
+    function prevPhoto() {
+      if (filteredPhotos.length === 0) return;
+      currentPhotoIndex = (currentPhotoIndex - 1 + filteredPhotos.length) % filteredPhotos.length;
+      updateLightboxContent();
+    }
+
+    function setupKeyboardNavigation() {
+      window.addEventListener("keydown", (e) => {
+        const lb = document.getElementById("lightboxModal");
+        if (lb.classList.contains("hidden")) return;
+
+        if (e.key === "ArrowRight") nextPhoto();
+        if (e.key === "ArrowLeft") prevPhoto();
+        if (e.key === "Escape") closeLightbox();
+      });
+    }
+
+    // Loading State
+    function showLoading(isLoading) {
+      const skeleton = document.getElementById("loadingSkeleton");
+      const grid = document.getElementById("photoGrid");
+      if (isLoading) {
+        skeleton.classList.remove("hidden");
+        grid.classList.add("hidden");
+      } else {
+        skeleton.classList.add("hidden");
+      }
+    }
+
+    // Settings Modal
+    function openSettingsModal() {
+      document.getElementById("inputSiteTitle").value = config.siteTitle || "";
+      document.getElementById("inputFolderId").value = config.folderId || "";
+      document.getElementById("inputApiKey").value = config.apiKey || "";
+      document.getElementById("settingsModal").classList.remove("hidden");
+    }
+
+    function closeSettingsModal() {
+      document.getElementById("settingsModal").classList.add("hidden");
+    }
+
+    function saveSettings(event) {
+      event.preventDefault();
+      config.siteTitle = document.getElementById("inputSiteTitle").value.trim() || "Drive Gallery";
+      config.folderId = document.getElementById("inputFolderId").value.trim();
+      config.apiKey = document.getElementById("inputApiKey").value.trim();
+
+      localStorage.setItem("gdrive_gallery_cfg", JSON.stringify(config));
+      closeSettingsModal();
+      loadConfig();
+      initGallery();
+    }
+  </script>
+</body>
+</html>
