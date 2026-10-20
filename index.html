@@ -37,12 +37,9 @@
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-500 flex items-center justify-center shadow-md shadow-sky-500/25">
           <i data-lucide="folder-git-2" class="w-5 h-5 text-white"></i>
         </div>
-        <div>
+        <div class="flex items-center gap-2">
           <h1 id="siteTitle" class="text-base sm:text-lg font-bold tracking-tight text-slate-900 leading-tight">IPT KATALOG</h1>
-          <p id="t-syncLive" class="text-xs text-slate-500 flex items-center gap-1.5 font-medium">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Sync Google Drive Real-time
-          </p>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" title="Live Sync"></span>
         </div>
       </div>
 
@@ -99,18 +96,7 @@
       </div>
     </div>
 
-    <!-- Live Sync Alert Hint (Biru Muda Soft) -->
-    <div class="mt-4 p-3.5 rounded-2xl bg-sky-50/80 border border-sky-100 flex items-center justify-between text-xs text-sky-900 gap-3">
-      <div class="flex items-center gap-2.5">
-        <div class="w-6 h-6 rounded-lg bg-sky-500/15 flex items-center justify-center flex-shrink-0 text-sky-600">
-          <i data-lucide="cloud" class="w-3.5 h-3.5"></i>
-        </div>
-        <span id="t-quickHint" class="font-medium">Mau tambah/hapus foto atau folder? Cukup buka Google Drive Anda di HP atau PC. Website akan otomatis mengikuti secara real-time!</span>
-      </div>
-      <a id="uploadHintLink" href="#" target="_blank" class="flex-shrink-0 text-sky-600 hover:text-sky-700 font-bold underline flex items-center gap-1">
-        <span id="t-addPhoto">Buka Drive</span> <i data-lucide="arrow-right" class="w-3 h-3"></i>
-      </a>
-    </div>
+
 
     <!-- Error Debug Banner -->
     <div id="errorBanner" class="hidden mt-4 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 shadow-sm">
@@ -421,12 +407,9 @@
     function applyLanguage(lang) {
       const t = translations[lang] || translations.id;
       document.getElementById("langLabel").innerText = t.langName;
-      document.getElementById("t-syncLive").innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> ${t.syncLive}`;
       document.getElementById("t-openDrive").innerText = t.openDrive;
       document.getElementById("t-config").innerText = t.config;
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
-      document.getElementById("t-quickHint").innerText = t.quickHint;
-      document.getElementById("t-addPhoto").innerText = t.addPhoto;
       document.getElementById("t-setupTitle").innerText = t.setupTitle;
       document.getElementById("t-setupDesc").innerText = t.setupDesc;
       document.getElementById("t-setupBtn").innerText = t.setupBtn;
@@ -510,7 +493,6 @@
 
       const driveUrl = `https://drive.google.com/drive/folders/${folderId}`;
       document.getElementById("openDriveBtn").href = driveUrl;
-      document.getElementById("uploadHintLink").href = driveUrl;
 
       try {
         const subfolders = await queryDrive(
