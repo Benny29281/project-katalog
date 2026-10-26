@@ -26,28 +26,28 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white antialiased">
 
-  <!-- ==================== HEADER (PUTIH BERSIH) ==================== -->
+  <!-- ==================== HEADER (RESPONSIF HP & PC) ==================== -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-3">
       
       <!-- Brand & Title -->
-      <div class="flex items-center gap-3 cursor-pointer select-none" onclick="navigateToRoot()">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-500 flex items-center justify-center shadow-md shadow-sky-500/25">
-          <i data-lucide="folder-git-2" class="w-5 h-5 text-white"></i>
+      <div class="flex items-center gap-2 sm:gap-3 cursor-pointer select-none min-w-0" onclick="navigateToRoot()">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-tr from-sky-400 to-blue-500 flex items-center justify-center shadow-md shadow-sky-500/25 flex-shrink-0">
+          <i data-lucide="folder-git-2" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
         </div>
-        <div class="flex items-center gap-2">
-          <h1 id="siteTitle" class="text-base sm:text-lg font-bold tracking-tight text-slate-900 leading-tight">IPT KATALOG</h1>
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" title="Live Sync"></span>
+        <div class="flex items-center gap-1.5 sm:gap-2 truncate">
+          <h1 id="siteTitle" class="text-sm sm:text-base md:text-lg font-bold tracking-tight text-slate-900 leading-tight truncate">IPT KATALOG</h1>
+          <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" title="Live Sync"></span>
         </div>
       </div>
 
       <!-- Action Buttons (Biru Muda / Sky Blue) -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
         
         <!-- Language Switcher Toggle -->
-        <button onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 transition" title="Ganti Bahasa / 切换语言">
+        <button onclick="toggleLanguage()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg sm:rounded-xl text-xs font-semibold bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 transition" title="Ganti Bahasa / 切换语言">
           <i data-lucide="languages" class="w-3.5 h-3.5 text-sky-500"></i>
           <span id="langLabel">中文</span>
         </button>
@@ -61,13 +61,13 @@
 
         <!-- Refresh Button -->
         <button onclick="refreshCurrentFolder()" title="Muat Ulang / 刷新"
-                class="p-2 rounded-xl text-slate-600 hover:text-sky-600 bg-slate-100 hover:bg-sky-50 border border-slate-200 transition">
+                class="p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-slate-600 hover:text-sky-600 bg-slate-100 hover:bg-sky-50 border border-slate-200 transition">
           <i data-lucide="refresh-cw" class="w-4 h-4" id="refreshIcon"></i>
         </button>
 
         <!-- Settings Button (Biru Muda Primer) -->
         <button onclick="openSettingsModal()" title="Pengaturan / 设置"
-                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-sky-500 hover:bg-sky-600 text-white shadow-md shadow-sky-500/25 transition">
+                class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 rounded-lg sm:rounded-xl text-xs font-semibold bg-sky-500 hover:bg-sky-600 text-white shadow-md shadow-sky-500/25 transition">
           <i data-lucide="settings" class="w-4 h-4"></i>
           <span class="hidden sm:inline" id="t-config">Pengaturan</span>
         </button>
@@ -77,23 +77,39 @@
   </header>
 
   <!-- ==================== MAIN CONTENT ==================== -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
 
-    <!-- Top Toolbar: Breadcrumb Navigation & Search -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+    <!-- Top Toolbar: Breadcrumbs, Search & View Switcher (List / Grid) -->
+    <div class="flex flex-col gap-3 pb-4 border-b border-slate-200">
       
       <!-- Breadcrumb Bar (Folder Hierarki) -->
-      <nav class="flex items-center gap-1.5 text-xs sm:text-sm overflow-x-auto py-1 scrollbar-none" id="breadcrumbNav">
+      <nav class="flex items-center gap-1 text-xs sm:text-sm overflow-x-auto py-1 scrollbar-none flex-nowrap" id="breadcrumbNav">
         <!-- Injected via JavaScript -->
       </nav>
 
-      <!-- Search Input -->
-      <div class="relative w-full md:w-80">
-        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input type="text" id="searchInput" placeholder="Cari foto di folder ini..."
-               oninput="handleSearch(this.value)"
-               class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition shadow-sm placeholder:text-slate-400">
+      <!-- Search & Layout Switcher Row -->
+      <div class="flex items-center gap-2">
+        <!-- Search Input -->
+        <div class="relative flex-1">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input type="text" id="searchInput" placeholder="Cari foto di folder ini..."
+                 oninput="handleSearch(this.value)"
+                 class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition shadow-sm placeholder:text-slate-400">
+        </div>
+
+        <!-- Layout Mode Toggle (Grid vs List) -->
+        <div class="flex items-center bg-white p-1 rounded-xl border border-slate-200 shadow-sm flex-shrink-0" title="Ubah Tampilan / 切换视图">
+          <button id="viewGridBtn" onclick="setViewMode('grid')" class="p-1.5 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition" title="Tampilan Kotak (Grid)">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline" id="t-viewGrid">Grid</span>
+          </button>
+          <button id="viewListBtn" onclick="setViewMode('list')" class="p-1.5 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition" title="Tampilan Daftar (List)">
+            <i data-lucide="list" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline" id="t-viewList">List</span>
+          </button>
+        </div>
       </div>
+
     </div>
 
 
@@ -126,8 +142,8 @@
     </div>
 
     <!-- ==================== SUBFOLDERS SECTION ==================== -->
-    <div id="folderSection" class="mt-8 hidden">
-      <div class="flex items-center justify-between mb-4">
+    <div id="folderSection" class="mt-6 sm:mt-8 hidden">
+      <div class="flex items-center justify-between mb-3 sm:mb-4">
         <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
           <i data-lucide="folder" class="w-4 h-4 text-sky-500"></i>
           <span id="t-foldersTitle">Folder / Album</span>
@@ -135,15 +151,15 @@
         </h2>
       </div>
 
-      <!-- Folders Grid -->
-      <div id="folderGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+      <!-- Folders Grid / List Container -->
+      <div id="folderGrid">
         <!-- Injected via JavaScript -->
       </div>
     </div>
 
     <!-- ==================== PHOTOS SECTION ==================== -->
-    <div class="mt-8">
-      <div class="flex items-center justify-between mb-4">
+    <div class="mt-6 sm:mt-8">
+      <div class="flex items-center justify-between mb-3 sm:mb-4">
         <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
           <i data-lucide="image" class="w-4 h-4 text-sky-500"></i>
           <span id="t-photosTitle">Foto</span>
@@ -153,16 +169,16 @@
       </div>
 
       <!-- Loading Skeleton (Putih/Abu) -->
-      <div id="loadingSkeleton" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
-        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
-        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
-        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
-        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
-        <div class="aspect-square rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+      <div id="loadingSkeleton" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
+        <div class="aspect-square rounded-xl sm:rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+        <div class="aspect-square rounded-xl sm:rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+        <div class="aspect-square rounded-xl sm:rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+        <div class="aspect-square rounded-xl sm:rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
+        <div class="aspect-square rounded-xl sm:rounded-2xl bg-white border border-slate-200 animate-pulse shadow-sm"></div>
       </div>
 
-      <!-- Photo Grid -->
-      <div id="photoGrid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+      <!-- Photo Grid / List Container -->
+      <div id="photoGrid" class="hidden">
         <!-- Injected via JavaScript -->
       </div>
 
@@ -186,46 +202,46 @@
   </footer>
 
   <!-- ==================== LIGHTBOX MODAL ==================== -->
-  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex flex-col justify-between p-4 sm:p-6 transition-all select-none">
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex flex-col justify-between p-3 sm:p-6 transition-all select-none">
     
     <!-- Lightbox Top Bar -->
-    <div class="flex items-center justify-between text-white">
-      <div class="flex items-center gap-3 truncate pr-4">
-        <span id="lbCounter" class="text-xs text-sky-300 font-mono bg-white/10 px-2.5 py-1 rounded-md border border-white/10">1 / 1</span>
-        <h4 id="lbFileName" class="text-xs sm:text-sm font-medium truncate max-w-xs sm:max-w-md">Nama File</h4>
+    <div class="flex items-center justify-between text-white gap-2">
+      <div class="flex items-center gap-2 sm:gap-3 truncate pr-2 min-w-0">
+        <span id="lbCounter" class="text-[11px] sm:text-xs text-sky-300 font-mono bg-white/10 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border border-white/10 flex-shrink-0">1 / 1</span>
+        <h4 id="lbFileName" class="text-xs sm:text-sm font-medium truncate max-w-[140px] xs:max-w-xs sm:max-w-md">Nama File</h4>
       </div>
-      <div class="flex items-center gap-2">
-        <a id="lbDownloadBtn" href="#" target="_blank" download class="p-2 rounded-xl bg-white/10 hover:bg-sky-500 text-white transition" title="Download">
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <a id="lbDownloadBtn" href="#" target="_blank" download class="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-white/10 hover:bg-sky-500 text-white transition" title="Download">
           <i data-lucide="download" class="w-4 h-4"></i>
         </a>
-        <a id="lbOpenInDrive" href="#" target="_blank" class="p-2 rounded-xl bg-white/10 hover:bg-sky-500 text-white transition" title="Buka di Drive">
+        <a id="lbOpenInDrive" href="#" target="_blank" class="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-white/10 hover:bg-sky-500 text-white transition" title="Buka di Drive">
           <i data-lucide="external-link" class="w-4 h-4"></i>
         </a>
-        <button onclick="closeLightbox()" class="p-2 rounded-xl bg-white/10 hover:bg-rose-600 text-white transition" title="Tutup / 关闭">
-          <i data-lucide="x" class="w-5 h-5"></i>
+        <button onclick="closeLightbox()" class="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-white/10 hover:bg-rose-600 text-white transition" title="Tutup / 关闭">
+          <i data-lucide="x" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </button>
       </div>
     </div>
 
     <!-- Lightbox Image Stage -->
-    <div class="relative flex-1 flex items-center justify-center my-3 overflow-hidden">
+    <div class="relative flex-1 flex items-center justify-center my-2 sm:my-3 overflow-hidden" id="lbStage">
       <!-- Prev Button (Biru Muda Hover) -->
-      <button onclick="prevPhoto()" class="absolute left-2 sm:left-4 z-10 p-3 rounded-full bg-black/60 hover:bg-sky-500 border border-white/20 text-white transition shadow-xl">
-        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+      <button onclick="prevPhoto()" class="absolute left-1 sm:left-4 z-10 p-2 sm:p-3 rounded-full bg-black/60 hover:bg-sky-500 border border-white/20 text-white transition shadow-xl">
+        <i data-lucide="chevron-left" class="w-4 h-4 sm:w-5 sm:h-5"></i>
       </button>
 
       <!-- Main Image -->
       <img id="lbImage" src="" alt="Preview" referrerpolicy="no-referrer"
-           class="max-h-[75vh] max-w-full object-contain rounded-xl shadow-2xl transition duration-300">
+           class="max-h-[75vh] max-w-full object-contain rounded-lg sm:rounded-xl shadow-2xl transition duration-300">
 
       <!-- Next Button (Biru Muda Hover) -->
-      <button onclick="nextPhoto()" class="absolute right-2 sm:right-4 z-10 p-3 rounded-full bg-black/60 hover:bg-sky-500 border border-white/20 text-white transition shadow-xl">
-        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+      <button onclick="nextPhoto()" class="absolute right-1 sm:right-4 z-10 p-2 sm:p-3 rounded-full bg-black/60 hover:bg-sky-500 border border-white/20 text-white transition shadow-xl">
+        <i data-lucide="chevron-right" class="w-4 h-4 sm:w-5 sm:h-5"></i>
       </button>
     </div>
 
     <!-- Lightbox Keyboard Tip -->
-    <div class="text-center text-xs text-slate-400" id="t-navTip">
+    <div class="text-center text-[11px] sm:text-xs text-slate-400 py-1" id="t-navTip">
       Gunakan panah kiri/kanan (← →) atau swipe untuk navigasi &bull; Tekan Esc untuk keluar
     </div>
   </div>
@@ -312,8 +328,6 @@
         openDrive: "Buka di Drive",
         config: "Pengaturan",
         searchPlaceholder: "Cari foto di folder ini...",
-        quickHint: "Mau tambah/hapus foto atau folder? Cukup buka Google Drive Anda di HP atau PC. Website akan otomatis mengikuti secara real-time!",
-        addPhoto: "Buka Drive",
         setupTitle: "Hubungkan ke Google Drive Anda",
         setupDesc: "Masukkan ID Folder Google Drive dan Google API Key untuk mulai menampilkan folder & foto secara otomatis.",
         setupBtn: "Buka Pengaturan Sekarang",
@@ -338,7 +352,12 @@
         connError: "Koneksi Bermasalah",
         errBlocked: "Domain diblokir oleh Google API Key. Di Google Cloud Console > Credentials > API Key, ubah Application restrictions menjadi 'None'.",
         errNotFound: "Folder tidak ditemukan! Pastikan Folder ID benar dan sudah diatur ke 'Siapa saja yang memiliki link' (Viewer).",
-        errInvalidKey: "Kunci API tidak valid! Pastikan Anda sudah mengaktifkan 'Google Drive API' di Google Cloud Console."
+        errInvalidKey: "Kunci API tidak valid! Pastikan Anda sudah mengaktifkan 'Google Drive API' di Google Cloud Console.",
+        viewGrid: "Grid",
+        viewList: "Daftar",
+        viewPhoto: "Lihat",
+        openFolder: "Buka Folder",
+        photoItem: "Item Foto"
       },
       zh: {
         langName: "ID",
@@ -347,8 +366,6 @@
         openDrive: "在云端打开",
         config: "设置",
         searchPlaceholder: "搜索相册中的照片...",
-        quickHint: "想要添加或删除照片或文件夹？只需在手机或电脑的云端硬盘中操作，网页将自动实时同步更新！",
-        addPhoto: "打开云盘",
         setupTitle: "连接至您的谷歌云端硬盘",
         setupDesc: "输入谷歌云端硬盘文件夹ID和API密钥，即刻自动展示您的文件夹与照片相册。",
         setupBtn: "立即打开设置",
@@ -373,27 +390,56 @@
         connError: "连接异常",
         errBlocked: "访问被 Google API Key 限制拦截。请在 Google Cloud Console 中将应用限制设置为“无 (None)”。",
         errNotFound: "未找到文件夹！请确保已将该文件夹权限设置为“任何拥有链接者均可查看”。",
-        errInvalidKey: "API密钥无效，请确认已在 Google Cloud Console 中启用了 Google Drive API。"
+        errInvalidKey: "API密钥无效，请确认已在 Google Cloud Console 中启用了 Google Drive API。",
+        viewGrid: "网格",
+        viewList: "列表",
+        viewPhoto: "查看",
+        openFolder: "打开相册",
+        photoItem: "照片"
       }
     };
 
     // State Variables
     let currentLang = localStorage.getItem("gdrive_gallery_lang") || "id";
+    let currentViewMode = localStorage.getItem("gdrive_gallery_view") || "list"; // default list
     let config = { ...DEFAULT_CONFIG };
     let currentFolder = { id: "", name: "" };
     let folderHistory = [];
+    let currentSubfolders = [];
     let allPhotos = [];
-    let filteredPhotos = [];
-    let currentPhotoIndex = 0;
-
     // Inisialisasi Aplikasi
     document.addEventListener("DOMContentLoaded", () => {
       lucide.createIcons();
       applyLanguage(currentLang);
       loadConfig();
+      updateViewModeUI();
       initGallery();
       setupKeyboardNavigation();
+      setupTouchSwipe();
     });
+
+    // Toggle Mode Tampilan (Grid vs List)
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      localStorage.setItem("gdrive_gallery_view", mode);
+      updateViewModeUI();
+      renderFolders(currentSubfolders);
+      renderPhotos(filteredPhotos);
+    }
+
+    function updateViewModeUI() {
+      const gridBtn = document.getElementById("viewGridBtn");
+      const listBtn = document.getElementById("viewListBtn");
+      if (!gridBtn || !listBtn) return;
+
+      if (currentViewMode === "grid") {
+        gridBtn.className = "p-1.5 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1 bg-sky-500 text-white shadow-sm transition";
+        listBtn.className = "p-1.5 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1 text-slate-600 hover:text-slate-900 transition";
+      } else {
+        gridBtn.className = "p-1.5 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1 text-slate-600 hover:text-slate-900 transition";
+        listBtn.className = "p-1.5 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1 bg-sky-500 text-white shadow-sm transition";
+      }
+    }
 
     // Toggle Bahasa
     function toggleLanguage() {
@@ -401,6 +447,8 @@
       localStorage.setItem("gdrive_gallery_lang", currentLang);
       applyLanguage(currentLang);
       updateBreadcrumbs();
+      renderFolders(currentSubfolders);
+      renderPhotos(filteredPhotos);
     }
 
     // Terapkan Terjemahan ke Elemen UI
@@ -427,6 +475,8 @@
       document.getElementById("t-lblApiDesc").innerHTML = t.lblApiDesc;
       document.getElementById("t-btnCancel").innerText = t.btnCancel;
       document.getElementById("t-btnSave").innerText = t.btnSave;
+      if (document.getElementById("t-viewGrid")) document.getElementById("t-viewGrid").innerText = t.viewGrid;
+      if (document.getElementById("t-viewList")) document.getElementById("t-viewList").innerText = t.viewList;
 
       if (!config.siteTitle) {
         document.getElementById("siteTitle").innerText = t.siteDefault;
@@ -503,6 +553,7 @@
           `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`
         );
 
+        currentSubfolders = subfolders;
         renderFolders(subfolders);
 
         allPhotos = photos.map(file => {
@@ -572,7 +623,7 @@
       return data.files || [];
     }
 
-    // Render Subfolders (Desain Card Putih & Biru Muda)
+    // Render Subfolders (Mendukung Grid & List Mode)
     function renderFolders(folders) {
       const container = document.getElementById("folderGrid");
       const section = document.getElementById("folderSection");
@@ -586,28 +637,53 @@
 
       section.classList.remove("hidden");
       badge.innerText = folders.length;
+      const t = translations[currentLang] || translations.id;
 
-      folders.forEach(f => {
-        const card = document.createElement("button");
-        card.className = "folder-card flex items-center gap-3 p-3.5 rounded-2xl bg-white hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 text-left transition shadow-sm hover:shadow-md group";
-        card.onclick = () => openFolder(f.id, f.name);
-        card.innerHTML = `
-          <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0 shadow-inner">
-            <i data-lucide="folder" class="w-5 h-5"></i>
-          </div>
-          <div class="truncate flex-1">
-            <span class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-sky-600 truncate block">${f.name}</span>
-            <span class="text-[10px] text-slate-400 group-hover:text-sky-500 flex items-center gap-1 font-medium">
-              <span>Buka Folder</span> <i data-lucide="chevron-right" class="w-2.5 h-2.5"></i>
-            </span>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+      if (currentViewMode === "grid") {
+        container.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3.5";
+        folders.forEach(f => {
+          const card = document.createElement("button");
+          card.className = "folder-card flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 text-left transition shadow-sm hover:shadow-md group";
+          card.onclick = () => openFolder(f.id, f.name);
+          card.innerHTML = `
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-sky-100 text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0 shadow-inner">
+              <i data-lucide="folder" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </div>
+            <div class="truncate flex-1 min-w-0">
+              <span class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-sky-600 truncate block">${f.name}</span>
+              <span class="text-[10px] text-slate-400 group-hover:text-sky-500 flex items-center gap-1 font-medium">
+                <span>${t.openFolder}</span> <i data-lucide="chevron-right" class="w-2.5 h-2.5"></i>
+              </span>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } else {
+        // Mode List untuk Folder
+        container.className = "flex flex-col gap-2";
+        folders.forEach(f => {
+          const card = document.createElement("button");
+          card.className = "folder-card flex items-center gap-3 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 text-left transition shadow-sm hover:shadow-md group w-full";
+          card.onclick = () => openFolder(f.id, f.name);
+          card.innerHTML = `
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-sky-100 text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0 shadow-inner">
+              <i data-lucide="folder" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </div>
+            <div class="truncate flex-1 min-w-0">
+              <span class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-sky-600 truncate block">${f.name}</span>
+              <span class="text-[10px] text-slate-400 font-medium">${t.openFolder}</span>
+            </div>
+            <div class="p-1 text-slate-400 group-hover:text-sky-600 flex-shrink-0">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
       lucide.createIcons();
     }
 
-    // Render Foto (Frame Bersih Putih)
+    // Render Foto (Mendukung Grid & List Mode)
     function renderPhotos(photos) {
       const container = document.getElementById("photoGrid");
       const emptyState = document.getElementById("emptyState");
@@ -625,22 +701,60 @@
 
       emptyState.classList.add("hidden");
       container.classList.remove("hidden");
+      const t = translations[currentLang] || translations.id;
 
-      photos.forEach((photo, index) => {
-        const card = document.createElement("div");
-        card.className = "image-card group relative aspect-square rounded-2xl overflow-hidden bg-white border border-slate-200 cursor-pointer shadow-sm hover:shadow-lg hover:border-sky-300 transition";
-        card.onclick = () => openLightbox(index);
+      if (currentViewMode === "grid") {
+        container.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3.5";
+        photos.forEach((photo, index) => {
+          const card = document.createElement("div");
+          card.className = "image-card group relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-slate-200 cursor-pointer shadow-sm hover:shadow-lg hover:border-sky-300 transition";
+          card.onclick = () => openLightbox(index);
 
-        card.innerHTML = `
-          <img src="${photo.thumbUrl}" alt="${photo.name}" loading="lazy" referrerpolicy="no-referrer"
-               class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-               onerror="this.onerror=null; this.src='https://placehold.co/400x400/f8fafc/94a3b8?text=Foto';">
-          <div class="image-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent opacity-0 transition duration-300 flex flex-col justify-end p-3">
-            <p class="text-xs font-semibold text-white truncate drop-shadow">${photo.name}</p>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+          card.innerHTML = `
+            <img src="${photo.thumbUrl}" alt="${photo.name}" loading="lazy" referrerpolicy="no-referrer"
+                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                 onerror="this.onerror=null; this.src='https://placehold.co/400x400/f8fafc/94a3b8?text=Foto';">
+            <div class="image-overlay absolute inset-0 bg-gradient-to-t from-slate-900/85 via-slate-900/20 to-transparent opacity-0 transition duration-300 flex flex-col justify-end p-2 sm:p-3">
+              <p class="text-[11px] sm:text-xs font-semibold text-white truncate drop-shadow">${photo.name}</p>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } else {
+        // Mode List untuk Foto (Sangat pas dan nyaman dibaca di layar HP)
+        container.className = "flex flex-col gap-2";
+        photos.forEach((photo, index) => {
+          const card = document.createElement("div");
+          card.className = "image-card flex items-center gap-2.5 sm:gap-3.5 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-white hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 transition shadow-sm hover:shadow-md cursor-pointer group";
+          card.onclick = () => openLightbox(index);
+
+          card.innerHTML = `
+            <div class="w-13 h-13 sm:w-16 sm:h-16 w-[52px] h-[52px] sm:w-[64px] sm:h-[64px] rounded-lg sm:rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100">
+              <img src="${photo.thumbUrl}" alt="${photo.name}" loading="lazy" referrerpolicy="no-referrer"
+                   class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                   onerror="this.onerror=null; this.src='https://placehold.co/200x200/f8fafc/94a3b8?text=Foto';">
+            </div>
+            <div class="flex-1 min-w-0 pr-1">
+              <h4 class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-sky-600 truncate leading-snug">${photo.name}</h4>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-medium">${t.photoItem}</span>
+                <span class="text-[10px] text-slate-400 font-mono">#${index + 1}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-1 flex-shrink-0">
+              <span class="hidden xs:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-sky-50 group-hover:bg-sky-500 text-sky-600 group-hover:text-white text-xs font-semibold transition">
+                <span>${t.viewPhoto}</span>
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+              </span>
+              <div class="xs:hidden p-1.5 text-slate-400 group-hover:text-sky-600">
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+      lucide.createIcons();
     }
 
     // Navigasi Folder & Breadcrumbs
@@ -755,6 +869,27 @@
         if (e.key === "ArrowLeft") prevPhoto();
         if (e.key === "Escape") closeLightbox();
       });
+    }
+
+    // Touch Swipe Gesture untuk Layar HP
+    function setupTouchSwipe() {
+      let touchStartX = 0;
+      let touchEndX = 0;
+      const lb = document.getElementById("lightboxModal");
+      if (!lb) return;
+
+      lb.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      lb.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 45) {
+          if (diff < 0) nextPhoto(); // geser kiri -> foto berikutnya
+          else prevPhoto(); // geser kanan -> foto sebelumnya
+        }
+      }, { passive: true });
     }
 
     function showLoading(isLoading) {
